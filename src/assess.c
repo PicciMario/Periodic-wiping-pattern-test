@@ -46,6 +46,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
 #include "../include/decls.h"
 #include "../include/cephes.h"  
 #include "../include/utilities.h"
@@ -386,8 +387,41 @@ computeMetrics(char *s, int test)
 		uniformity = cephes_igamc(9.0/2.0, chi2/2.0);
 	}
 	
-	for ( j=0; j<10; j++ )			/* DISPLAY RESULTS */
-		fprintf(summary, "%3d ", freqPerBin[j]);
+	for ( j=0; j<10; j++ ){			/* DISPLAY RESULTS */
+		fprintf(summary, "%3d ", freqPerBin[j]);		
+	}
+	
+	//prints to output data file
+	if (strcmp(tp.outputFileName, "") != 0){
+		for ( j=0; j<10; j++ ){		
+			FILE *fp;
+			fp = fopen(tp.outputFileName, "a+");
+			
+			fprintf(fp, "%4d ", freqPerBin[j]);
+			
+			if (j == 9) {
+				struct tm *local;
+  				time_t t;
+  				char buffer[50];
+  				t = time(NULL);
+  				local = localtime(&t);
+					
+				if ( sampleSize == 0 )
+					fprintf(fp, " ------    ");
+				else if ( (passCount < proportion_threshold_min) || (passCount > proportion_threshold_max))
+					fprintf(fp, "%4d/%-4d * ", passCount, sampleSize);
+				else
+					fprintf(fp, "%4d/%-4d   ", passCount, sampleSize);
+  				
+  				strftime (buffer, 30, "%d/%m/%Y %H:%M:%S", local);
+  				
+				fprintf(fp, "\t%s\t%s\n", buffer, tp.inputFileName);
+			}
+			
+			fclose(fp);
+		}
+	}
+	
 	
 	if ( expCount == 0 )
 		fprintf(summary, "    ----    ");

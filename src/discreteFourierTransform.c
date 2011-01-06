@@ -64,15 +64,7 @@ DiscreteFourierTransform(int n)
 	printf("\t\tstatus         = %s\n", p_value < ALPHA ? "NON RANDOM" : "RANDOM");
 	printf("\t\t-------------------------------------------\n");
 	*/
-	
-	if (strcmp(tp.outputFileName, "") != 0){
-		FILE *fp;
-		if (fp = fopen(tp.outputFileName, "a+")){
-			fprintf(fp, "%f\t%f\t%f\t%f\t%f\t%s\n", percentile, N_l, N_o, d, p_value, p_value < ALPHA ? "NON RANDOM" : "RANDOM");
-		}
-		fclose(fp);
-	}
-	
+		
 	printf("status = %s\n", p_value < ALPHA ? "NON RANDOM" : "RANDOM");
 	
 	fprintf(stats[TEST_FFT], "\t\t\t\tFFT TEST\n");
