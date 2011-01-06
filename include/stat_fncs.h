@@ -18,3 +18,4 @@ void	RandomExcursions(int n);
 void	RandomExcursionsVariant(int n);
 void	LinearComplexity(int M, int n);
 void	Serial(int m, int n);
+void	DiscreteFourierTransform80(int n);

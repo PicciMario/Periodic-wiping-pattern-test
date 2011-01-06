@@ -415,7 +415,7 @@ computeMetrics(char *s, int test)
   				
   				strftime (buffer, 30, "%d/%m/%Y %H:%M:%S", local);
   				
-				fprintf(fp, "\t%s\t%s\n", buffer, tp.inputFileName);
+				fprintf(fp, "\t%s\t%s\t%s\n", testNames[test], buffer, tp.inputFileName);
 			}
 			
 			fclose(fp);

@@ -112,7 +112,7 @@ chooseTests()
 	
 	//PM - salta scelta test
 	for( i=1; i<=NUMOFTESTS; i++ )
-		if (i == 7)
+		if (i == 7 || i == 16)
 			testVector[i] = 1;
 		else
 			testVector[i] = 0;
@@ -129,7 +129,7 @@ chooseTests()
 	printf("    [09] Overlapping Template Matchings  [10] Universal Statistical\n");
 	printf("    [11] Approximate Entropy             [12] Random Excursions\n");
 	printf("    [13] Random Excursions Variant       [14] Serial\n");
-	printf("    [15] Linear Complexity\n\n");
+	printf("    [15] Linear Complexity               [16] Discrete Fourier Transform 80\n\n");
 	printf("         INSTRUCTIONS\n");
 	printf("            Enter 0 if you DO NOT want to apply all of the\n");
 	printf("            statistical tests to each sequence and 1 if you DO.\n\n");
@@ -143,8 +143,8 @@ chooseTests()
 		printf("         INSTRUCTIONS\n");
 		printf("            Enter a 0 or 1 to indicate whether or not the numbered statistical\n");
 		printf("            test should be applied to each sequence.\n\n");
-		printf("      123456789111111\n");
-		printf("               012345\n");
+		printf("      1234567891111111\n");
+		printf("               0123456\n");
 		printf("      ");
 		for ( i=1; i<=NUMOFTESTS; i++ ) 
 			scanf("%1d", &testVector[i]);
@@ -411,7 +411,9 @@ openOutputStreams(int option)
 	for( i=1; i<=NUMOFTESTS; i++ ) {
 		if ( testVector[i] == 1 ) {
 			sprintf(statsDir, "experiments/%s/%s/stats.txt", generatorDir[option], testNames[i]);
+			printf("experiments/%s/%s/stats.txt\n", generatorDir[option], testNames[i]);
 			sprintf(resultsDir, "experiments/%s/%s/results.txt", generatorDir[option], testNames[i]);
+			printf("experiments/%s/%s/results.txt\n", generatorDir[option], testNames[i]);
 			if ( (stats[i] = fopen(statsDir, "w")) == NULL ) {	/* STATISTICS LOG */
 				printf("ERROR: LOG FILES COULD NOT BE OPENED.\n");
 				printf("       MAX # OF OPENED FILES HAS BEEN REACHED = %d\n", numOfOpenFiles);
@@ -543,4 +545,7 @@ nist_test_suite()
 	
 	if ( (testVector[0] == 1) || (testVector[TEST_LINEARCOMPLEXITY] == 1) )
 		LinearComplexity(tp.linearComplexitySequenceLength, tp.n);
+
+	if ( (testVector[0] == 1) || (testVector[TEST_FFT80] == 1) )
+		DiscreteFourierTransform80(tp.n);
 }

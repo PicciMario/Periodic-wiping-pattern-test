@@ -13,7 +13,8 @@ OBJ = $(OBJDIR)/assess.o $(OBJDIR)/frequency.o $(OBJDIR)/blockFrequency.o \
       $(OBJDIR)/approximateEntropy.o $(OBJDIR)/randomExcursions.o \
       $(OBJDIR)/randomExcursionsVariant.o $(OBJDIR)/linearComplexity.o \
       $(OBJDIR)/dfft.o $(OBJDIR)/cephes.o $(OBJDIR)/matrix.o \
-      $(OBJDIR)/utilities.o $(OBJDIR)/generators.o $(OBJDIR)/genutils.o
+      $(OBJDIR)/utilities.o $(OBJDIR)/generators.o $(OBJDIR)/genutils.o \
+      $(OBJDIR)/discreteFourierTransform80.o
 
 assess: $(OBJ)
 	$(CC) -o $@ $(OBJ) -lm
@@ -42,6 +43,10 @@ $(OBJDIR)/rank.o: $(SRCDIR)/rank.c defs.h externs.h matrix.h
 $(OBJDIR)/discreteFourierTransform.o: $(SRCDIR)/discreteFourierTransform.c \
         defs.h externs.h utilities.h
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/discreteFourierTransform.c
+
+$(OBJDIR)/discreteFourierTransform80.o: $(SRCDIR)/discreteFourierTransform80.c \
+        defs.h externs.h utilities.h
+	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/discreteFourierTransform80.c
 
 $(OBJDIR)/nonOverlappingTemplateMatchings.o: \
         $(SRCDIR)/nonOverlappingTemplateMatchings.c defs.h externs.h utilities.h
