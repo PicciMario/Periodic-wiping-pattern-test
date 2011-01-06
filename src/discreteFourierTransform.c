@@ -41,14 +41,14 @@ DiscreteFourierTransform(int n)
 	for ( i=0; i<n/2; i++ )
 		m[i+1] = sqrt(pow(X[2*i+1],2)+pow(X[2*i+2],2)); 
 	count = 0;				       /* CONFIDENCE INTERVAL */
-	upperBound = sqrt(1.6094*n);
+	upperBound = sqrt(2.995732274*n);
 	for ( i=0; i<n/2; i++ )
 		if ( m[i] < upperBound )
 			count++;
 	percentile = (double)count/(n/2)*100;
 	N_l = (double) count;       /* number of peaks less than h = sqrt(3*n) */
-	N_o = (double) 0.8*n/2.0;
-	d = (N_l - N_o)/sqrt(n/4.0*0.8*0.2);
+	N_o = (double) 0.95*n/2.0;
+	d = (N_l - N_o)/sqrt(n/4.0*0.95*0.05);
 	p_value = erfc(fabs(d)/sqrt(2.0));
 
 	/*
@@ -64,8 +64,6 @@ DiscreteFourierTransform(int n)
 	printf("\t\tstatus         = %s\n", p_value < ALPHA ? "NON RANDOM" : "RANDOM");
 	printf("\t\t-------------------------------------------\n");
 	*/
-		
-	printf("status = %s\n", p_value < ALPHA ? "NON RANDOM" : "RANDOM");
 	
 	fprintf(stats[TEST_FFT], "\t\t\t\tFFT TEST\n");
 	fprintf(stats[TEST_FFT], "\t\t-------------------------------------------\n");
