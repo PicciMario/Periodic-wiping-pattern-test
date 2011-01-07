@@ -64,8 +64,6 @@ DiscreteFourierTransform80(int n)
 	printf("\t\tstatus         = %s\n", p_value < ALPHA ? "NON RANDOM" : "RANDOM");
 	printf("\t\t-------------------------------------------\n");
 	*/
-		
-	printf("status = %s\n", p_value < ALPHA ? "NON RANDOM" : "RANDOM");
 	
 	fprintf(stats[TEST_FFT80], "\t\t\t\tFFT TEST\n");
 	fprintf(stats[TEST_FFT80], "\t\t-------------------------------------------\n");

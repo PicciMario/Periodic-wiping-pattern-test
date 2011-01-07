@@ -411,9 +411,7 @@ openOutputStreams(int option)
 	for( i=1; i<=NUMOFTESTS; i++ ) {
 		if ( testVector[i] == 1 ) {
 			sprintf(statsDir, "experiments/%s/%s/stats.txt", generatorDir[option], testNames[i]);
-			printf("experiments/%s/%s/stats.txt\n", generatorDir[option], testNames[i]);
 			sprintf(resultsDir, "experiments/%s/%s/results.txt", generatorDir[option], testNames[i]);
-			printf("experiments/%s/%s/results.txt\n", generatorDir[option], testNames[i]);
 			if ( (stats[i] = fopen(statsDir, "w")) == NULL ) {	/* STATISTICS LOG */
 				printf("ERROR: LOG FILES COULD NOT BE OPENED.\n");
 				printf("       MAX # OF OPENED FILES HAS BEEN REACHED = %d\n", numOfOpenFiles);
