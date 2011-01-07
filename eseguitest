@@ -1,0 +1,10 @@
+NOISE=50
+
+python gentest.py -o "samples/sample$NOISE" -r 10000 -s "abcde" -n $NOISE
+cd samples
+split -b 4k sample$NOISE sample$NOISE
+cd ..
+
+for datafile in $( ls samples/sample$NOISE*); do
+	./assess 320 $datafile 100 test_res.txt
+done

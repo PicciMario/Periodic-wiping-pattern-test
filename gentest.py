@@ -41,7 +41,7 @@ for o, a in opts:
 		numRip = int(a);
 	
 	if o in ("-n", "--noise"):
-		error_prob = a;
+		error_prob = int(a);
 
 # creating the file
 
