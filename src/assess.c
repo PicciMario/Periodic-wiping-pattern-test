@@ -411,11 +411,11 @@ computeMetrics(char *s, int test)
 				else if ( (passCount < proportion_threshold_min) || (passCount > proportion_threshold_max))
 					fprintf(fp, "%4d/%-4d * ", passCount, sampleSize);
 				else
-					fprintf(fp, "%4d/%-4d   ", passCount, sampleSize);
+					fprintf(fp, "%4d/%-4d x ", passCount, sampleSize);
   				
   				strftime (buffer, 30, "%d/%m/%Y %H:%M:%S", local);
   				
-				fprintf(fp, "\t%s\t%s\t%s\n", testNames[test], buffer, tp.inputFileName);
+				fprintf(fp, "  %s  %s  %s\n", testNames[test], buffer, tp.inputFileName);
 			}
 			
 			fclose(fp);

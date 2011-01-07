@@ -6,7 +6,7 @@ for dname in AlgorithmTesting BBS CCG G-SHA1 LCG MODEXP MS QCG1 QCG2 XOR ; do
 	mkdir $dname/Runs
 	mkdir $dname/LongestRun
 	mkdir $dname/Rank
-	mkdir $dname/FFT
+	mkdir $dname/FFT95
 	mkdir $dname/FFT80
 	mkdir $dname/NonOverlappingTemplate
 	mkdir $dname/OverlappingTemplate
