@@ -1,6 +1,17 @@
 NOISE=50
 
+if [ -n "$1" ]
+then
+	NOISE=$1
+fi
+
+if [ ! -d samples ]; then
+	mkdir samples
+	echo "created directory samples"
+fi
+
 python gentest.py -o "samples/sample$NOISE" -r 10000 -s "abcde" -n $NOISE
+
 cd samples
 split -b 4k sample$NOISE sample$NOISE
 cd ..
