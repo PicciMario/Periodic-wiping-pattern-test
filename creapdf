@@ -1,8 +1,13 @@
+# Crea un PDF contenente l'analisi di tutti i file txt trovati nella
+# cartella peaksdata svolta mediante lo script python res_analysis2.py
+
+#! /bin/bash
+
 rm peaksdata/*.pdf
 rm peaksdata/*.tmp
 
 for file in $(ls peaksdata/*.txt) ; do
-	python res_analysis2.py -f $file | enscript -p - | ps2pdf - ${file%\.*}.tmp
+	python res_analysis2.py -f $file | enscript --fancy-header -p - | ps2pdf - ${file%\.*}.tmp
 done
 
 pdftk peaksdata/*.tmp cat output peaksdata/risultato.pdf

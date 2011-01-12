@@ -1,4 +1,4 @@
-for elemtype in doc f gif html jpg pdf pdf2 pdf3 pdf4 ppt ppt2 ppt3 ps txt vari xls xls2 xml  ; do
+for elemtype in seq00 seq10 seq20 seq30 seq40 seq50 ; do
 	rm test_${elemtype}_perc.txt
 	for file in $(ls samples/$elemtype/*); do
 		./assess 32000 $file 1 test_$elemtype.txt

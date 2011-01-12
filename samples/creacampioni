@@ -1,4 +1,4 @@
-for elemtype in doc pdf ppt txt xls ; do
+for elemtype in seq00 seq10 seq20 seq30 seq40 seq50 ; do
 	cd $elemtype	
 	for file in $(ls); do
 		split -a 2 -b 4k $file $file
