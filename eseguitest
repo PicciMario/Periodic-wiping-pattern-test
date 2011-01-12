@@ -1,4 +1,4 @@
-NOISE=50
+NOISE=20
 
 if [ -n "$1" ]
 then
@@ -10,7 +10,7 @@ if [ ! -d samples ]; then
 	echo "created directory samples"
 fi
 
-python gentest.py -o "samples/sample$NOISE" -r 10000 -s "abcde" -n $NOISE
+python gentest.py -o "samples/sample$NOISE" -r 10000 -s "I" -n $NOISE
 
 cd samples
 split -b 4k sample$NOISE sample$NOISE
@@ -19,3 +19,5 @@ cd ..
 for datafile in $( ls samples/sample$NOISE*); do
 	./assess 320 $datafile 100 test_res.txt
 done
+
+rm samples/*

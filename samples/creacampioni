@@ -1,0 +1,8 @@
+for elemtype in doc pdf ppt txt xls ; do
+	cd $elemtype	
+	for file in $(ls); do
+		split -a 2 -b 4k $file $file
+		rm $file
+	done
+	cd ..
+done

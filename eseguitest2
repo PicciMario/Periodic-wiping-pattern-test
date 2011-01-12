@@ -1,0 +1,5 @@
+for elemtype in ppt ppt2 ppt3 xls xls2  ; do
+	for file in $(ls samples/$elemtype/*); do
+		./assess 320 $file 100 test_$elemtype.txt
+	done
+done
