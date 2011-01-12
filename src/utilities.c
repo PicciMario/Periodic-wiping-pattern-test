@@ -395,7 +395,7 @@ void
 openOutputStreams(int option)
 {
 	int		i, numOfBitStreams, numOfOpenFiles = 0;
-	char	freqfn[200], summaryfn[200], statsDir[200], resultsDir[200];
+	char	freqfn[200], summaryfn[200], statsDir[200], resultsDir[200], results2Dir[200];
 	
 	sprintf(freqfn, "experiments/%s/freq.txt", generatorDir[option]);
 	if ( (freqfp = fopen(freqfn, "w")) == NULL ) {
@@ -412,6 +412,7 @@ openOutputStreams(int option)
 		if ( testVector[i] == 1 ) {
 			sprintf(statsDir, "experiments/%s/%s/stats.txt", generatorDir[option], testNames[i]);
 			sprintf(resultsDir, "experiments/%s/%s/results.txt", generatorDir[option], testNames[i]);
+			sprintf(results2Dir, "experiments/%s/%s/results2.txt", generatorDir[option], testNames[i]);
 			if ( (stats[i] = fopen(statsDir, "w")) == NULL ) {	/* STATISTICS LOG */
 				printf("ERROR: LOG FILES COULD NOT BE OPENED.\n");
 				printf("       MAX # OF OPENED FILES HAS BEEN REACHED = %d\n", numOfOpenFiles);
@@ -420,7 +421,17 @@ openOutputStreams(int option)
 			}
 			else
 				numOfOpenFiles++;
+				
 			if ( (results[i] = fopen(resultsDir, "w")) == NULL ) {	/* P_VALUES LOG   */
+				 printf("ERROR: LOG FILES COULD NOT BE OPENED.\n");
+				 printf("       MAX # OF OPENED FILES HAS BEEN REACHED = %d\n", numOfOpenFiles);
+				 printf("-OR-   THE OUTPUT DIRECTORY DOES NOT EXIST.\n");
+				 exit(-1);
+			}
+			else
+				numOfOpenFiles++;
+				
+			if ( (results2[i] = fopen(results2Dir, "w")) == NULL ) {	/* P_VALUES LOG   */
 				 printf("ERROR: LOG FILES COULD NOT BE OPENED.\n");
 				 printf("       MAX # OF OPENED FILES HAS BEEN REACHED = %d\n", numOfOpenFiles);
 				 printf("-OR-   THE OUTPUT DIRECTORY DOES NOT EXIST.\n");

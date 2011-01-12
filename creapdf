@@ -1,0 +1,11 @@
+rm peaksdata/*.pdf
+rm peaksdata/*.tmp
+
+for file in $(ls peaksdata/*.txt) ; do
+	python res_analysis2.py -f $file | enscript -p - | ps2pdf - ${file%\.*}.tmp
+done
+
+pdftk peaksdata/*.tmp cat output peaksdata/risultato.pdf
+rm peaksdata/*.tmp
+
+

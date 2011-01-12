@@ -9,6 +9,7 @@ extern BitSequence	*epsilon;				// BIT STREAM
 extern TP			tp;						// TEST PARAMETER STRUCTURE
 extern FILE			*stats[NUMOFTESTS+1];	// FILE OUTPUT STREAM
 extern FILE			*results[NUMOFTESTS+1];	// FILE OUTPUT STREAM
+extern FILE			*results2[NUMOFTESTS+1];
 extern FILE			*freqfp;				// FILE OUTPUT STREAM
 extern FILE			*summary;				// FILE OUTPUT STREAM
 extern int			testVector[NUMOFTESTS+1];

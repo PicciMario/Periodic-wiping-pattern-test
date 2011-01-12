@@ -105,6 +105,8 @@ main(int argc, char *argv[])
 			fclose(stats[i]);
 		if ( results[i] != NULL )
 			fclose(results[i]);
+		if ( results2[i] != NULL )
+			fclose(results[i]);
 	}
 	if ( (testVector[0] == 1) || (testVector[TEST_CUSUM] == 1) ) 
 		partitionResultFile(2, tp.numOfBitStreams, option, TEST_CUSUM);
@@ -136,6 +138,7 @@ partitionResultFile(int numOfFiles, int numOfSequences, int option, int testName
 	float	c;
 	FILE	**fp = (FILE **)calloc(numOfFiles+1, sizeof(FILE *));
 	int		*results = (int *)calloc(numOfFiles, sizeof(int *));
+	int		*results2 = (int *)calloc(numOfFiles, sizeof(int *));
 	char	*s[MAXFILESPERMITTEDFORPARTITION];
 	char	resultsDir[200];
 	
@@ -359,6 +362,7 @@ computeMetrics(char *s, int test)
 			A[j] = c;
 		}
 	}
+	
 	if ( sampleSize == 0 )
 		passCount = 0;
 	else

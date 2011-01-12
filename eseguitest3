@@ -1,0 +1,8 @@
+for elemtype in doc f gif html jpg pdf pdf2 pdf3 pdf4 ppt ppt2 ppt3 ps txt vari xls xls2 xml  ; do
+	rm test_${elemtype}_perc.txt
+	for file in $(ls samples/$elemtype/*); do
+		./assess 32000 $file 1 test_$elemtype.txt
+		cat experiments/AlgorithmTesting/FFT80/results2.txt >> test_${elemtype}_perc.txt
+	done
+	rm test_$elemtype.txt
+done

@@ -45,6 +45,19 @@ DiscreteFourierTransform80(int n)
 	for ( i=0; i<n/2; i++ )
 		if ( m[i] < upperBound )
 			count++;
+	
+	// count peaks over limit
+	int over80 = 0;
+	float overLimit = sqrt(2.995732274*n);
+	for ( i=0; i<n/2; i++ )
+		if ( m[i] > overLimit )
+			over80++;	
+	printf("Count over 95: %i\n", over80);
+	
+	float percOverLimit = 0;
+	percOverLimit = (float)over80 / (n/2) * 100;
+	printf("perc over limit: %f\n", percOverLimit);
+			
 	percentile = (double)count/(n/2)*100;
 	N_l = (double) count;       /* number of peaks less than h = sqrt(3*n) */
 	N_o = (double) 0.8*n/2.0;
@@ -77,6 +90,8 @@ DiscreteFourierTransform80(int n)
 
 	fprintf(stats[TEST_FFT80], "%s\t\tp_value = %f\n\n", p_value < ALPHA ? "FAILURE" : "SUCCESS", p_value);
 	fprintf(results[TEST_FFT80], "%f\n", p_value);
+	
+	fprintf(results2[TEST_FFT80], "%f\n", percOverLimit);
 
 	free(X);
 	free(wsave);
