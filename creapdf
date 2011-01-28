@@ -3,14 +3,14 @@
 
 #! /bin/bash
 
-rm peaksdata/*.pdf
-rm peaksdata/*.tmp
+rm periodicseqresults/*.pdf
+rm periodicseqresults/*.tmp
 
-for file in $(ls peaksdata/*.txt) ; do
+for file in $(ls periodicseqresults/*.txt) ; do
 	python res_analysis2.py -f $file | enscript --fancy-header -p - | ps2pdf - ${file%\.*}.tmp
 done
 
-pdftk peaksdata/*.tmp cat output peaksdata/risultato.pdf
-rm peaksdata/*.tmp
+pdftk periodicseqresults/*.tmp cat output periodicseqresults/risultato.pdf
+rm periodicseqresults/*.tmp
 
 

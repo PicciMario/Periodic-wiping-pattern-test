@@ -1,0 +1,150 @@
+seq=10
+numrip=10000
+bitsperrun=8000000
+numxtests=10
+maxchunksperfile=10
+
+seq=10
+numrip=10000
+bitsperrun=32000
+numxtests=10
+
+echo ""
+echo "*** creating $seq x 4 periodic sequences with $numrip base elements each"
+echo ""
+
+rm periodicseq/*
+
+for noise in 10 20 30 40 ; do
+	for (( i=1; i<=seq; i++  )); do
+		python gentest.py -o periodicseq/${i}.s${noise} -n ${noise} -r ${numrip}
+	done
+done
+
+echo ""
+echo "*** testing periodic sequences"
+echo ""
+
+kbytesperrun=$(( $bitsperrun / 8000 ))
+echo "*** kbytes per run: $kbytesperrun"
+
+rm periodicseqresults/*
+
+for file in $(ls periodicseq/*) ; do
+	filename=${file##*/}
+	basename=${filename%\.*}
+	extension=${filename##*.}
+	blocks=$(( $(du -k ${file} | cut -f1) / ${kbytesperrun} - 1 ))
+	echo "file dimension (in KB): $(du -k ${file} | cut -f1)"
+	echo "blocks: $blocks"
+	if [ $blocks -gt $maxchunksperfile ]; then
+		blocks=${maxchunksperfile}
+	fi
+	if [ $blocks -ge 1 ]; then
+		./assess ${bitsperrun} ${file} ${blocks} periodicseqresults/${extension}_${basename}.txt
+		cat experiments/AlgorithmTesting/FFT80/results2.txt > periodicseqresults/${extension}_${basename}.dat
+	fi
+done
+
+echo ""
+echo "*** testing normal sequences"
+echo ""
+
+rm entiresamplesresults/*
+
+for file in $(ls entiresamples/*) ; do
+	filename=${file##*/}
+	basename=${filename%\.*}
+	extension=${filename##*.}
+	blocks=$(( $(du -k ${file} | cut -f1) / ${kbytesperrun} - 1 ))
+	if [ $blocks -gt $maxchunksperfile ]; then
+		blocks=${maxchunksperfile}
+	fi
+	if [ $blocks -ge 1 ]; then
+		./assess ${bitsperrun} $file $blocks entiresamplesresults/${extension}_${basename}.txt
+		cat experiments/AlgorithmTesting/FFT80/results2.txt > entiresamplesresults/${extension}_${basename}.dat
+	fi
+done
+
+echo ""
+echo "*** cross testing sequences to draw ROC"
+echo ""
+
+rm ripetitestresult
+
+for (( a=0; a<numxtests; a++ )); do
+
+	negatives=$(( $RANDOM % 200 + 10 ))
+	positives=$(( $RANDOM % 200 + 10 ))
+	
+	falsepositives=0
+	for (( i=1; i<=negatives; i++  )); do
+		set -- $(ls entiresamplesresults/*.dat)
+		length=$#
+		random_num=$(( ($RANDOM % ($length)) + 1 ))
+		filename=${!random_num}
+		res=$(python classify.py -f ${filename})
+		if [ $res -eq 1 ]; then
+			falsepositives=$(( $falsepositives + 1 ))
+		fi
+	done
+	echo False positive rate FPR:
+	echo False positives: ${falsepositives}
+	echo Negatives: ${negatives}
+	
+	falsenegatives=0
+	for (( i=1; i<=positives; i++  )); do
+		set -- $(ls periodicseqresults/*.dat)
+		length=$#
+		random_num=$(( $RANDOM % ($length) + 1 ))
+		filename=${!random_num}
+		res=$(python classify.py -f ${filename})
+		if [ $res -eq 0 ]; then
+			falsenegatives=$(( $falsenegatives + 1 ))
+		fi
+	done
+	
+	echo True positive rate TPR:
+	truepositives=$(( $positives - $falsenegatives  ))
+	echo True Positives: $truepositives
+	echo Positives: $positives
+	
+	echo $falsepositives $negatives $truepositives $positives >> ripetitestresult
+
+done
+
+python ripetitestavg.py -f ripetitestresult
+
+echo ""
+echo "*** building average value"
+echo ""
+
+echo "0 0" > ripetitestresultavg
+python ripetitestavg.py -f ripetitestresult >> ripetitestresultavg
+echo "1 1" >> ripetitestresultavg
+
+echo ""
+echo "*** building ROC graph"
+echo ""
+
+gnuplot ROC.p
+
+resultavgname="ripetitestresultavg_${bitsperrun}"
+mv ripetitestresultavg $resultavgname
+
+echo ""
+echo "*** saving data"
+echo ""
+
+resultfile="ripetitestresult_${bitsperrun}"
+mv ripetitestresult $resultfile
+echo "results: $resultfile"
+
+echo "averages: $resultavgname"
+
+graphfile="ripetitestgraph_${bitsperrun}.pdf"
+mv grafico.pdf $graphfile
+echo "graph: $graphfile"
+
+echo ""
+echo "*** done"

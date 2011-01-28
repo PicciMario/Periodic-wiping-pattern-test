@@ -1,10 +1,14 @@
 import os
 import random
 import getopt, sys
+import string
 
 fileName = "test.dat";
-seq = "abcdeFG";
-numRip = 10000;
+numRip = 1000000;
+
+chars=string.letters + string.digits;
+seqlen = int(random.uniform(5,15))
+seq = ''.join([random.choice(chars) for i in range(seqlen)])
 
 error_prob = 10;
 
@@ -48,7 +52,7 @@ for o, a in opts:
 out_file = open(fileName,"w")
 for i in range(numRip):
 	if (random.uniform(1,100) <= error_prob):
-		string = os.urandom(len(seq))
+		string = os.urandom(int(len(seq)))
 	else:
 		string = seq
 	out_file.write(string)
@@ -56,4 +60,4 @@ out_file.close()
 
 # confirm
 
-print("Generated file \""+fileName+"\" with "+str(numRip)+" elements of the sequence ["+seq+"] (noise probability:"+str(error_prob)+"%).");
+print("Generated file \""+fileName+"\" with "+str(numRip)+" elements of the sequence ["+seq+"] (noise probability:"+str(error_prob)+"%), sequence length: " + str(len(seq)) + "("  + str(len(seq)*8) + " bit)");
